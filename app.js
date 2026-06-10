@@ -12,11 +12,18 @@ const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 
+const allowedOrigins = process.env.FRONTEND_URL
+  ? process.env.FRONTEND_URL.split(",").map((u) => u.trim())
+  : [];
+
 app.use(cors({
   origin: function (origin, callback) {
+    // Allow server-to-server requests (no origin)
     if (!origin) return callback(null, true);
+    // Allow any localhost for development
     if (origin.match(/^http:\/\/localhost:\d+$/)) return callback(null, true);
-    if (origin === process.env.FRONTEND_URL) return callback(null, true);
+    // Allow all configured frontend URLs
+    if (allowedOrigins.includes(origin)) return callback(null, true);
     callback(new Error("Not allowed by CORS"));
   },
   credentials: true
@@ -55,7 +62,7 @@ app.use("/api/v2/withdraw", withdraw);
 
 
 app.get("/vercel-test", (req, res) => {
-  res.send("Hello, World!");rf
+  res.send("Hello, World!");
 });
 
 // it's for ErrorHandling
