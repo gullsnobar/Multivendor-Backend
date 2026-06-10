@@ -12,9 +12,17 @@ const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 
-const allowedOrigins = process.env.FRONTEND_URL
-  ? process.env.FRONTEND_URL.split(",").map((u) => u.trim())
-  : [];
+const allowedOrigins = [
+  "https://capable-tiramisu-feb534.netlify.app"
+];
+if (process.env.FRONTEND_URL) {
+  process.env.FRONTEND_URL.split(",").forEach((u) => {
+    const trimmed = u.trim();
+    if (!allowedOrigins.includes(trimmed)) {
+      allowedOrigins.push(trimmed);
+    }
+  });
+}
 
 app.use(cors({
   origin: function (origin, callback) {
