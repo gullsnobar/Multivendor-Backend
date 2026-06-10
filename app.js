@@ -55,7 +55,7 @@ app.use("/api/v2/withdraw", withdraw);
 
 
 app.get("/vercel-test", (req, res) => {
-  res.send("Hello, World!");
+  res.send("Hello, World!");rf
 });
 
 // it's for ErrorHandling
